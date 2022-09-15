@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/RLBench-SAC-with-DenseReward.iml" filepath="$PROJECT_DIR$/.idea/RLBench-SAC-with-DenseReward.iml" />
+    </modules>
+  </component>
+</project>
