@@ -15,53 +15,6 @@ import math
 os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.environ["COPPELIASIM_ROOT"]
 
 
-class GripperPlot:
-    def __init__(self, headless):
-        self.headless = headless
-        if headless:
-            return
-        self.displayed_gripper = 0.9
-        self.fig = plt.figure()
-        ax = self.fig.add_subplot(111)
-        ax.set_xlim(-1.25, 1.25)
-        ax.set_ylim(-1.25, 1.25)
-        horizontal_patch = plt.Rectangle((-1, 0), 2, 0.6)
-        self.left_patch = plt.Rectangle((-0.9, -1), 0.4, 1, color="black")
-        self.right_patch = plt.Rectangle((0.5, -1), 0.4, 1, color="black")
-        ax.add_patch(horizontal_patch)
-        ax.add_patch(self.left_patch)
-        ax.add_patch(self.right_patch)
-        # self.fig.canvas.draw()
-        # plt.show(block=False)
-        # plt.pause(0.1)
-        # for _ in range(2):
-        #     self.set_data(0)
-        #     plt.pause(0.1)
-        #     self.set_data(1)
-        #     plt.pause(0.1)
-        return
-
-    def set_data(self, last_gripper_open):
-        if self.headless:
-            return
-        if self.displayed_gripper == last_gripper_open:
-            return
-        if last_gripper_open == 0.9:
-            self.displayed_gripper = 0.9
-            self.left_patch.set_xy((-0.9, -1))
-            self.right_patch.set_xy((0.5, -1))
-        elif last_gripper_open == -0.9:
-            self.displayed_gripper = -0.9
-            self.left_patch.set_xy((-0.4, -1))
-            self.right_patch.set_xy((0, -1))
-        # self.fig.canvas.draw()
-        # plt.pause(0.01)
-        return
-
-    def reset(self):
-        self.set_data(1)
-
-
 class CustomEnv:
     def __init__(self, config):
 
@@ -101,7 +54,6 @@ class CustomEnv:
         self.env.launch()
         self.task_name = config["task"]
         self.task = self.env.get_task(task_switch[config["task"]])
-        # self.gripper_plot = GripperPlot(config["headless_env"])
         self.gripper_open = 0.9 #0.9
         self.gripper_deque = deque([0.9] * 20, maxlen=20)
         self.first_flag = 0
@@ -112,7 +64,6 @@ class CustomEnv:
         return
 
     def reset(self):
-        # self.gripper_plot.reset()
         self.gripper_open = 0.9 #0.9
         self.gripper_deque = deque([0.9] * 20, maxlen=20)
         descriptions, obs = self.task.reset()
@@ -293,7 +244,6 @@ class CustomEnv:
             gripper_action = 0.9
         elif gripper_action < 0.0:
             gripper_action = -0.9
-        # self.gripper_plot.set_data(gripper_action)
         self.gripper_deque.append(gripper_action)
 
         self.gripper_open = 0
